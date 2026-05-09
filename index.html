@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nur Salam Postres Y Paletas – Postres Fríos & Paletas de Fruta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── Variables ── */
+    :root {
+      --mango:   #FF9800;
+      --coral:   #FF5252;
+      --rosa:    #FF80AB;
+      --verde:   #00C853;
+      --crema:   #FFF8E1;
+      --oscuro:  #1A1A2E;
+      --texto:   #3D2B1F;
+      --sombra:  rgba(255,90,0,.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--crema);
+      color: var(--texto);
+      overflow-x: hidden;
+    }
+
+    /* ── Fondo animado de burbujas ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(circle at 15% 20%,  #FFD54F55 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%,  #FF525222 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%,  #FF80AB18 0%, transparent 60%),
+        var(--crema);
+    }
+
+    /* ════════════════════════════════
+       NAVBAR
+    ════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(255,248,225,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #FFD54F66;
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px var(--sombra); }
+
+    .nav-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.6rem;
+      color: var(--coral);
+      text-decoration: none;
+      letter-spacing: .5px;
+    }
+    .nav-logo span { color: var(--mango); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 700;
+      color: var(--texto);
+      position: relative;
+      transition: color .25s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0; right: 0;
+      height: 2px; background: var(--mango);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .25s;
+    }
+    .nav-links a:hover { color: var(--coral); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* hamburger */
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .burger span { width: 26px; height: 3px; background: var(--coral); border-radius: 3px; transition: .3s; }
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
+    #inicio {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+    }
+
+    .hero-content { max-width: 720px; }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--mango);
+      color: #fff;
+      font-weight: 800;
+      font-size: .85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: .35rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.4rem;
+      animation: fadeDown .7s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      line-height: 1.1;
+      color: var(--coral);
+      animation: fadeDown .8s .1s ease both;
+    }
+    .hero-title span { color: var(--mango); }
+
+    .hero-sub {
+      margin: 1.4rem auto;
+      font-size: 1.15rem;
+      max-width: 520px;
+      color: #5a3e2b;
+      line-height: 1.7;
+      animation: fadeDown .8s .2s ease both;
+    }
+
+    .hero-emojis {
+      font-size: 2.5rem;
+      letter-spacing: .5rem;
+      margin: 1.2rem 0;
+      animation: fadeDown .8s .3s ease both;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--coral), var(--mango));
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: .9rem 2.6rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px var(--sombra);
+      transition: transform .25s, box-shadow .25s;
+      animation: fadeDown .8s .4s ease both;
+    }
+    .btn-cta:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 14px 32px var(--sombra); }
+
+    /* paleta flotante decorativa */
+    .paleta-deco {
+      position: absolute;
+      font-size: 4rem;
+      animation: flotar 4s ease-in-out infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+    .pd1 { top: 18%; left: 8%;  animation-delay: 0s;   }
+    .pd2 { top: 60%; right: 7%; animation-delay: 1.2s; }
+    .pd3 { bottom: 15%; left: 20%; animation-delay: 2s; }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0) rotate(-6deg); }
+      50%       { transform: translateY(-18px) rotate(6deg); }
+    }
+
+    /* ════════════════════════════════
+       NOSOTROS
+    ════════════════════════════════ */
+    #nosotros {
+      padding: 6rem 2rem;
+      display: flex; justify-content: center;
+    }
+    .nosotros-card {
+      max-width: 860px;
+      background: #fff;
+      border-radius: 28px;
+      padding: 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      box-shadow: 0 12px 48px var(--sombra);
+    }
+    .nosotros-img {
+      font-size: 9rem;
+      text-align: center;
+      animation: flotar 5s ease-in-out infinite;
+    }
+    .nosotros-txt h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.2rem;
+      color: var(--coral);
+      margin-bottom: 1rem;
+    }
+    .nosotros-txt p { font-size: 1.05rem; line-height: 1.8; color: #5a3e2b; }
+
+    /* ════════════════════════════════
+       PRODUCTOS
+    ════════════════════════════════ */
+    #productos {
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    .section-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--coral);
+      margin-bottom: .5rem;
+    }
+    .section-sub {
+      color: #7a5c44;
+      font-size: 1.05rem;
+      margin-bottom: 3rem;
+    }
+
+    .productos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .prod-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 2.2rem 1.8rem;
+      box-shadow: 0 8px 32px var(--sombra);
+      transition: transform .3s, box-shadow .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .prod-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    }
+    .prod-card.c1::before { background: linear-gradient(90deg, var(--mango), #FFD54F); }
+    .prod-card.c2::before { background: linear-gradient(90deg, var(--coral), var(--rosa)); }
+    .prod-card.c3::before { background: linear-gradient(90deg, var(--verde), #69F0AE); }
+    .prod-card.c4::before { background: linear-gradient(90deg, #9C27B0, #CE93D8); }
+    .prod-card.c5::before { background: linear-gradient(90deg, #E91E63, #F48FB1); }
+    .prod-card.c6::before { background: linear-gradient(90deg, #FF6F00, #FFB74D); }
+
+    .prod-card:hover { transform: translateY(-8px); box-shadow: 0 18px 48px var(--sombra); }
+
+    .prod-emoji { font-size: 3.8rem; margin-bottom: .8rem; }
+    .prod-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: .5rem; color: var(--texto); }
+    .prod-card p  { font-size: .95rem; color: #7a5c44; line-height: 1.6; }
+    .prod-precio {
+      display: inline-block;
+      margin-top: 1rem;
+      background: var(--crema);
+      border: 2px solid var(--mango);
+      color: var(--coral);
+      font-weight: 800;
+      padding: .3rem 1rem;
+      border-radius: 50px;
+      font-size: .95rem;
+    }
+
+    /* ════════════════════════════════
+       POR QUÉ ELEGIRNOS
+    ════════════════════════════════ */
+    #ventajas {
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, var(--coral) 0%, var(--mango) 100%);
+      text-align: center;
+      clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+    }
+    #ventajas .section-title,
+    #ventajas .section-sub { color: #fff; }
+
+    .ventajas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .ventaja-item {
+      background: rgba(255,255,255,.18);
+      border: 1.5px solid rgba(255,255,255,.35);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      color: #fff;
+      backdrop-filter: blur(4px);
+      transition: background .3s;
+    }
+    .ventaja-item:hover { background: rgba(255,255,255,.3); }
+    .ventaja-item .icon { font-size: 2.8rem; margin-bottom: .7rem; }
+    .ventaja-item h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: .4rem; }
+    .ventaja-item p  { font-size: .9rem; opacity: .9; }
+
+    /* ════════════════════════════════
+       CONTACTO
+    ════════════════════════════════ */
+    #contacto {
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+    .contacto-wrapper {
+      max-width: 640px;
+      margin: 2rem auto 0;
+      background: #fff;
+      border-radius: 28px;
+      padding: 3rem;
+      box-shadow: 0 12px 48px var(--sombra);
+    }
+    .form-group { margin-bottom: 1.4rem; text-align: left; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: .5rem; color: var(--texto); }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      border: 2px solid #FFD54F;
+      border-radius: 14px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      color: var(--texto);
+      background: var(--crema);
+      outline: none;
+      transition: border-color .25s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--coral); }
+    .form-group textarea { min-height: 130px; resize: vertical; }
+
+    .btn-enviar {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--coral), var(--mango));
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px var(--sombra);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-enviar:hover { transform: translateY(-3px); box-shadow: 0 12px 28px var(--sombra); }
+
+    .toast {
+      display: none;
+      margin-top: 1.2rem;
+      background: var(--verde);
+      color: #fff;
+      font-weight: 700;
+      padding: .8rem 1.5rem;
+      border-radius: 14px;
+      animation: fadeDown .4s ease;
+    }
+    .toast.show { display: block; }
+
+    /* info contacto */
+    .info-contacto {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .info-item {
+      display: flex; align-items: center; gap: .6rem;
+      font-weight: 700; color: var(--coral);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color .2s;
+    }
+    .info-item:hover { color: var(--mango); }
+    .info-item .ico { font-size: 1.4rem; }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    footer {
+      background: var(--oscuro);
+      color: #eee;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    footer .footer-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem;
+      color: var(--mango);
+      margin-bottom: .5rem;
+    }
+    footer p { font-size: .9rem; opacity: .7; }
+    footer .redes { margin-top: 1rem; display: flex; justify-content: center; gap: 1.2rem; }
+    footer .redes a {
+      font-size: 1.5rem; text-decoration: none;
+      transition: transform .25s;
+    }
+    footer .redes a:hover { transform: scale(1.3); }
+
+    /* ════════════════════════════════
+       ANIMACIONES
+    ════════════════════════════════ */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════ */
+    @media (max-width: 700px) {
+      .nosotros-card { grid-template-columns: 1fr; text-align: center; padding: 2.5rem 1.8rem; }
+      .nosotros-img  { font-size: 6rem; }
+      .nav-links {
+        display: none; flex-direction: column; position: absolute;
+        top: 64px; left: 0; right: 0; background: var(--crema);
+        padding: 1.5rem 2rem; gap: 1.2rem;
+        border-bottom: 2px solid #FFD54F66;
+      }
+      .nav-links.open { display: flex; }
+      .burger { display: flex; }
+      #ventajas { clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav id="navbar">
+    <a href="#inicio" class="nav-logo">Nur Salam <span>Postres y Paletas</span> 🍧</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#productos">Productos</a></li>
+      <li><a href="#ventajas">¿Por qué?</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="burger" id="burger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="inicio">
+    <div class="paleta-deco pd1">🥭</div>
+    <div class="paleta-deco pd2">🍓</div>
+    <div class="paleta-deco pd3">🍉</div>
+
+    <div class="hero-content">
+      <span class="hero-badge">🌴 100 % fruta natural</span>
+      <h1 class="hero-title">El sabor tropical<br>que <span>refresca</span> tu día</h1>
+      <p class="hero-sub">
+        Paletas artesanales de mango, frutas frescas y postres fríos hechos con amor.
+        Sin conservantes, sin secretos — ¡pura fruta!
+      </p>
+      <div class="hero-emojis">🥭🍋🍓🍒🥝🍍🍉</div>
+      <a href="#productos" class="btn-cta">Ver nuestros sabores ↓</a>
+    </div>
+  </section>
+
+  <!-- ── NOSOTROS ── -->
+  <section id="nosotros">
+    <div class="nosotros-card reveal">
+      <div class="nosotros-img">🌺</div>
+      <div class="nosotros-txt">
+        <h2>Nuestra historia</h2>
+        <p>
+          Nacimos con la idea simple de llevar el sabor auténtico de la fruta fresca a cada persona.
+          Elaboramos nuestras paletas y postres fríos de forma artesanal, seleccionando solo frutas
+          de la mejor calidad. Cada mordida es un viaje tropical lleno de color, frescura y alegría. 🌈
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRODUCTOS ── -->
+  <section id="productos">
+    <h2 class="section-title reveal">Nuestros Sabores</h2>
+    <p class="section-sub reveal">Paletas, postres y mucho más hechos al momento</p>
+
+    <div class="productos-grid">
+      <div class="prod-card c1 reveal">
+        <div class="prod-emoji">🥭</div>
+        <h3>Paleta de Mango</h3>
+        <p>Mango Tommy natural, ligeramente salado, con chile y tajín. La clásica que nunca falla. Puedes acompañar con tajín y nuestras sales de sabores.</p>
+        <span class="prod-precio">Desde $3.000</span>
+      </div>
+      <div class="prod-card c2 reveal">
+        <div class="prod-emoji">🍓</div>
+        <h3>Paleta de Fresa</h3>
+        <p>Fresas frescas con un toque de dulce y ácido. Suave por dentro, frutal por fuera. Puedes acompañar con tajín y nuestras sales de sabores.</p>
+        <span class="prod-precio">Desde $3.500</span>
+      </div>
+      <div class="prod-card c3 reveal">
+        <div class="prod-emoji">🍉</div>
+        <h3>Paleta de Sandía</h3>
+        <p>Refrescante y ligera, perfecta para los días más calurosos. Puedes acompañar con tajín y nuestras sales de sabores.</p>
+        <span class="prod-precio">Desde $3.000</span>
+      </div>
+      <div class="prod-card c4 reveal">
+        <div class="prod-emoji">🍍</div>
+        <h3>Paleta de Piña</h3>
+        <p>Piña en cuadros con una base de jugo de mango. Dulce y ligeramente ácida. Puedes acompañar con tajín y nuestras sales de sabores.</p>
+        <span class="prod-precio">Desde $3.500</span>
+      </div>
+      <div class="prod-card c5 reveal">
+        <div class="prod-emoji">🍰</div>
+        <h3>Postre Frío Tropical</h3>
+        <p>Capas de fruta fresca, base de napoleón suave. ¡Un lujo tropical!</p>
+        <span class="prod-precio">Desde $7.000</span>
+      </div>
+      <div class="prod-card c6 reveal">
+        <div class="prod-emoji">💚</div>
+        <h3>Paleta de Ciruela</h3>
+        <p>Ciruela en julianas con una base de jugo de ciruela dulce. Puedes acompañar con tajín y nuestras sales de sabores.</p>
+        <span class="prod-precio">Desde $4.000</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VENTAJAS ── -->
+  <section id="ventajas">
+    <h2 class="section-title reveal">¿Por qué elegirnos?</h2>
+    <p class="section-sub reveal">Lo que nos hace diferentes</p>
+    <div class="ventajas-grid">
+      <div class="ventaja-item reveal">
+        <div class="icon">🌿</div>
+        <h3>100 % Natural</h3>
+        <p>Solo usamos frutas frescas sin colorantes ni conservantes artificiales.</p>
+      </div>
+      <div class="ventaja-item reveal">
+        <div class="icon">🤝</div>
+        <h3>Hecho a mano</h3>
+        <p>Cada paleta es elaborada artesanalmente con cariño y dedicación.</p>
+      </div>
+      <div class="ventaja-item reveal">
+        <div class="icon">❄️</div>
+        <h3>Siempre fresco</h3>
+        <p>Producción diaria para garantizar la máxima frescura en cada pedido.</p>
+      </div>
+      <div class="ventaja-item reveal">
+        <div class="icon">🚴</div>
+        <h3>Domicilio</h3>
+        <p>Llevamos tus paletas favoritas directamente a la puerta de tu casa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACTO ── -->
+  <section id="contacto">
+    <h2 class="section-title reveal">¡Escríbenos!</h2>
+    <p class="section-sub reveal">Pedidos, eventos y catering — estamos para servirte 🥭🍧</p>
+
+    <div class="contacto-wrapper reveal">
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label for="nombre">Tu nombre</label>
+          <input type="text" id="nombre" placeholder="Ej. María García" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" placeholder="correo@ejemplo.com" required />
+        </div>
+        <div class="form-group">
+          <label for="sabor">¿Qué sabor te interesa?</label>
+          <select id="sabor">
+            <option value="">— Selecciona —</option>
+            <option>Paleta de Mango</option>
+            <option>Paleta de Fresa</option>
+            <option>Paleta de Sandía</option>
+            <option>Paleta de Piña</option>
+            <option>Postre Frío Tropical</option>
+            <option>Paleta de Ciruela</option>
+            <option>Combo / Evento especial</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" placeholder="Cuéntanos tu pedido o consulta..."></textarea>
+        </div>
+        <button type="submit" class="btn-enviar">Enviar mensaje 🥭</button>
+        <div class="toast" id="toast">¡Mensaje enviado! Te contactaremos pronto 🎉</div>
+      </form>
+    </div>
+
+    <div class="info-contacto reveal">
+      <a href="https://wa.me/573017805343" target="_blank" class="info-item">
+        <span class="ico">💬</span> WhatsApp
+      </a>
+      <a href="mailto:nursalampyp@gmail.com" class="info-item">
+        <span class="ico">📧</span> nursalampyp@gmail.com
+      </a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-logo">Nur Salam Postres y Paletas 🍧</div>
+    <p>Hecho con amor y fruta fresca 🌺 · Colombia</p>
+    <div class="redes">
+      <a href="https://wa.me/573017805343" target="_blank" title="WhatsApp">💬</a>
+      <a href="mailto:nursalampyp@gmail.com" title="Correo">📧</a>
+    </div>
+    <p style="margin-top:1rem;">&copy; 2025 Nur Salam Postres Y Paletas. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- ── JAVASCRIPT ── -->
+  <script>
+    /* Navbar sombra al hacer scroll */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    /* Hamburger menu */
+    const burger   = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    /* Cerrar menú al hacer clic en un enlace */
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    /* Reveal on scroll */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    /* Formulario de contacto – toast de confirmación */
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nombre  = document.getElementById('nombre').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const toast   = document.getElementById('toast');
+
+      if (!nombre || !email) {
+        alert('Por favor completa tu nombre y correo electrónico.');
+        return;
+      }
+
+      toast.classList.add('show');
+      this.reset();
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    });
+  </script>
+
+</body>
+</html>
