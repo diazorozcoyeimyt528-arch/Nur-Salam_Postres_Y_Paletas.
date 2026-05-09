@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nur Salam Postres Y Paletas – Postres Fríos & Paletas de Fruta</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("x--0WuWZJsc8pBWlH");</script>
   <style>
     /* ── Variables ── */
     :root {
@@ -599,7 +601,7 @@
   <span class="ico">📸</span> @nur_salam_pyp
 </a>
         </a>
-      <a href="mailto:nursalampyp@gmail.com" class="info-item">
+      <a href="mailto:nursalampyp1@gmail.com" class="info-item">
         <span class="ico">📧</span> nursalampyp@gmail.com
       </a>
     </div>
@@ -611,9 +613,9 @@
     <p>Hecho con amor y fruta fresca 🌺 · Colombia</p>
     <div class="redes">
       <a href="https://wa.me/573017805343" target="_blank" title="WhatsApp">💬</a>
-      <a href="mailto:nursalampyp@gmail.com" title="Correo">📧</a>
+      <a href="mailto:nursalampyp1@gmail.com" title="Correo">📧</a>
     </div>
-    <p style="margin-top:1rem;">&copy; 2025 Nur Salam Postres Y Paletas. Todos los derechos reservados.</p>
+    <p style="margin-top:1rem;">&copy; 2026 Nur Salam Postres Y Paletas. Todos los derechos reservados.</p>
   </footer>
 
   <!-- ── JAVASCRIPT ── -->
@@ -649,21 +651,24 @@
     reveals.forEach(el => observer.observe(el));
 
     /* Formulario de contacto – toast de confirmación */
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const nombre  = document.getElementById('nombre').value.trim();
-      const email   = document.getElementById('email').value.trim();
-      const toast   = document.getElementById('toast');
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      if (!nombre || !email) {
-        alert('Por favor completa tu nombre y correo electrónico.');
-        return;
-      }
-
+    emailjs.send("service_w7vjswc", "template_pbcc9sd", {
+      nombre:  document.getElementById('nombre').value,
+      email:   document.getElementById('email').value,
+      sabor:   document.getElementById('sabor').value,
+      mensaje: document.getElementById('mensaje').value,
+    })
+    .then(() => {
+      const toast = document.getElementById('toast');
       toast.classList.add('show');
-      this.reset();
-      setTimeout(() => toast.classList.remove('show'), 4000);
+      document.getElementById('contactForm').reset();
+    })
+    .catch((error) => {
+      alert("Error al enviar. Intenta de nuevo. " + error);
     });
+  });
   </script>
 
 </body>
